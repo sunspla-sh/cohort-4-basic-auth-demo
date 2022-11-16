@@ -50,7 +50,37 @@ const loginGetController = (req, res, next) => {
  * check if password is the same
  */
 const loginPostController = (req, res, next) => {
-  res.send('ok');
+  console.log(req.body);
+
+  if(!req.body.email || ! req.body.password){
+    res.send('Sorry you forgot email or password');
+    return;
+  }
+
+  User.findOne({ email: req.body.email })
+    .then(foundUser => {
+
+      if(!foundUser){
+        res.send('Sorry user does not exist');
+        return;
+      }
+
+      const isValidPassword = bcryptjs.compareSync(req.body.password, foundUser.password);
+
+      
+      if(!isValidPassword){
+        res.send('Sorry wrong password');
+        return;
+      }
+
+      res.send('logged in');
+
+    })
+    .catch(err => {
+      console.log(err);
+      res.send(err);
+    });
+  
 }
 
 module.exports = {

@@ -79,7 +79,7 @@ const loginPostController = (req, res, next) => {
 
       req.session.user = foundUser;
 
-      res.render('profile.hbs', foundUser);
+      res.redirect('/profile')
 
     })
     .catch(err => {
@@ -90,7 +90,6 @@ const loginPostController = (req, res, next) => {
 }
 
 const profileGetController = (req, res, next) => {
-  console.log(req.session);
   res.render('profile.hbs', req.session.user);
 }
 

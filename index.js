@@ -16,6 +16,11 @@ const hbs = require('hbs');
 app.set('views', __dirname + '/views')
 app.set('view engine', 'hbs');
 
+// app.use((req, res, next) => {
+//   console.log('hi')
+//   next()
+// })
+
 app.use(
   session({
     secret: 'keyboardcat',

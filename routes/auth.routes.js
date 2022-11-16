@@ -6,16 +6,24 @@ const {
   profileGetController
 } = require('../controllers/auth.controllers');
 
+const { isLoggedIn, isAnon } = require('../middlewares/auth.middlewares');
+
 const router = require('express').Router();
 
-router.get('/signup', signupGetController);
+router.get('/signup', isAnon, signupGetController);
 
-router.post('/signup', signupPostController);
+router.post('/signup', isAnon, signupPostController);
 
-router.get('/login', loginGetController);
+router.get('/login', isAnon, loginGetController);
 
-router.post('/login', loginPostController);
+router.post('/login', isAnon, loginPostController);
 
-router.get('/profile', profileGetController);
+router.get('/profile', isLoggedIn, profileGetController);
+
+router.get('/logout', (req, res, next) => {
+  req.session.destroy(() => {
+    res.redirect('/');
+  });
+});
 
 module.exports = router;

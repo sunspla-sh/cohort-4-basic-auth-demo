@@ -2,7 +2,8 @@ const {
   signupGetController,
   signupPostController,
   loginGetController,
-  loginPostController
+  loginPostController,
+  profileGetController
 } = require('../controllers/auth.controllers');
 
 const router = require('express').Router();
@@ -14,5 +15,7 @@ router.post('/signup', signupPostController);
 router.get('/login', loginGetController);
 
 router.post('/login', loginPostController);
+
+router.get('/profile', profileGetController);
 
 module.exports = router;

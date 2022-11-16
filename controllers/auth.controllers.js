@@ -52,28 +52,34 @@ const loginGetController = (req, res, next) => {
 const loginPostController = (req, res, next) => {
   console.log(req.body);
 
-  if(!req.body.email || ! req.body.password){
-    res.send('Sorry you forgot email or password');
+  const { email, password } = req.body;
+
+  if(!email || !password){
+    res.render('login.hbs', { errorMessage: 'Sorry you forgot email or password' });
     return;
   }
 
-  User.findOne({ email: req.body.email })
+  User.findOne({ email })
     .then(foundUser => {
 
       if(!foundUser){
-        res.send('Sorry user does not exist');
+        // res.send('Sorry user does not exist');
+        res.render('login.hbs', { errorMessage: 'Sorry user does not exist' })
         return;
       }
 
-      const isValidPassword = bcryptjs.compareSync(req.body.password, foundUser.password);
+      const isValidPassword = bcryptjs.compareSync(password, foundUser.password);
 
       
       if(!isValidPassword){
-        res.send('Sorry wrong password');
+        // res.send('Sorry wrong password');
+        res.render('login.hbs', { errorMessage: 'Sorry wrong password' })
         return;
       }
 
-      res.send('logged in');
+      req.session.user = foundUser;
+
+      res.render('profile.hbs', foundUser);
 
     })
     .catch(err => {
@@ -83,9 +89,15 @@ const loginPostController = (req, res, next) => {
   
 }
 
+const profileGetController = (req, res, next) => {
+  console.log(req.session);
+  res.render('profile.hbs', req.session.user);
+}
+
 module.exports = {
   signupGetController,
   signupPostController,
   loginGetController,
-  loginPostController
+  loginPostController,
+  profileGetController
 };

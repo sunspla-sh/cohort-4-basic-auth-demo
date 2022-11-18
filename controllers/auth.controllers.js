@@ -90,6 +90,7 @@ const loginPostController = (req, res, next) => {
 }
 
 const profileGetController = (req, res, next) => {
+  console.log(req.app.locals)
   res.render('profile.hbs', req.session.user);
 }
 

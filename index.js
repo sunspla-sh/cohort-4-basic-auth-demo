@@ -5,6 +5,8 @@ const MongoStore = require('connect-mongo');
 
 const authRouter = require('./routes/auth.routes');
 
+const { isPublic } = require('./middlewares/auth.middlewares')
+
 const app = express();
 
 mongoose.connect('mongodb://localhost:27017/basic-auth-demo')
@@ -43,10 +45,13 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/', authRouter);
-
-app.get('/', (req, res, next) => {
+app.get('/', isPublic, (req, res, next) => {
+  console.log(req.app.locals)
   res.render('index.hbs')
 });
+
+app.use('/', authRouter);
+
+
 
 app.listen(3000, () => console.log('app is running on port 3000'))

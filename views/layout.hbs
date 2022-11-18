@@ -9,10 +9,14 @@
 <body>
   <nav>
     <a href="/">Home</a>
-    <a href="/signup">Sign Up</a>
-    <a href="/login">Log In</a>
+    {{#unless isLoggedIn}}
+      <a href="/signup">Sign Up</a>
+      <a href="/login">Log In</a>
+    {{/unless}}
+    {{#if isLoggedIn}}
     <a href="/profile">Profile</a>
     <a href="/logout">Logout</a>
+    {{/if}}
   </nav>
   {{{body}}}
 </body>

@@ -20,7 +20,8 @@ router.post('/login', isAnon, loginPostController);
 
 router.get('/profile', isLoggedIn, profileGetController);
 
-router.get('/logout', (req, res, next) => {
+router.get('/logout', isLoggedIn, (req, res, next) => {
+  console.log(req.app.locals)
   req.session.destroy(() => {
     res.redirect('/');
   });
